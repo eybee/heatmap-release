@@ -96,10 +96,7 @@ catkin_package(
 
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
-include_directories(include)
-include_directories(
-  ${catkin_INCLUDE_DIRS} ${Boost_INCLUDE_DIRS}
-)
+include_directories(include ${catkin_INCLUDE_DIRS} ${Boost_INCLUDE_DIRS})
 
 link_directories(lib)
 
@@ -110,27 +107,24 @@ link_directories(lib)
 ## Declare a cpp executable
 add_executable(signal src/signal.cpp)
 add_executable(signal_sim src/signal_sim.cpp)
-
 add_executable(goal_measure src/goal_measure.cpp)
-
 add_executable(heatmap_client src/heatmap_client.cpp)
-
 add_executable(distance_measure src/distance_measure.cpp)
 
 ## Add cmake target dependencies of the executable/library
 ## as an example, message headers may need to be generated before nodes
-add_dependencies(signal heatmap_generate_messages_cpp)
+add_dependencies(signal heatmap_generate_messages_cpp ${catkin_EXPORTED_TARGETS})
+add_dependencies(signal_sim heatmap_generate_messages_cpp ${catkin_EXPORTED_TARGETS})
+add_dependencies(goal_measure heatmap_generate_messages_cpp ${catkin_EXPORTED_TARGETS})
+add_dependencies(heatmap_client heatmap_generate_messages_cpp ${catkin_EXPORTED_TARGETS})
+add_dependencies(distance_measure heatmap_generate_messages_cpp ${catkin_EXPORTED_TARGETS})
 
 ## Specify libraries to link a library or executable target against
- target_link_libraries(signal ${catkin_LIBRARIES})
- target_link_libraries(signal :iwlib.so)
-
+target_link_libraries(signal ${catkin_LIBRARIES})
+target_link_libraries(signal :iwlib.so)
 target_link_libraries(signal_sim ${catkin_LIBRARIES})
-
 target_link_libraries(goal_measure ${catkin_LIBRARIES})
-
 target_link_libraries(heatmap_client ${catkin_LIBRARIES})
-
 target_link_libraries(distance_measure ${catkin_LIBRARIES})
 
 #############
